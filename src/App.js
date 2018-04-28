@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, AsyncStorage } from 'react-native';
 import axios from 'axios';
 import { Header, Input, Button, Card, CardSection } from './components/common';
 
 class App extends Component {
   state = { headerText: 'Setup', findServer: 'https://cloud.internalpositioning.com/', family: '' };
 
+  componentWillMount() {
+    AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
+    AsyncStorage.getItem('family').then((family) => this.setState({ family }));
+  }
+
   getUsers() {
+    AsyncStorage.setItem('findServer', this.state.findServer);
+    AsyncStorage.setItem('family', this.state.family);
     const url = this.state.findServer + '/api/v1/devices/' + this.state.family;
     axios.get(url)
       .then((response) => {
