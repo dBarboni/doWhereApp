@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import axios from 'axios';
 import { Header, Input, Button, Card, CardSection } from './components/common';
 
 class App extends Component {
-  state = { headerText: 'Setup', findServer: 'https://cloud.internalpositioning.com/' };
+  state = { headerText: 'Setup', findServer: 'https://cloud.internalpositioning.com/', family: '' };
+
+  getUsers() {
+    const url = this.state.findServer + '/api/v1/devices/' + this.state.family;
+    axios.get(url)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   render() {
     return (
@@ -20,7 +32,16 @@ class App extends Component {
             />
           </CardSection>
           <CardSection>
-            <Button>Next</Button>
+            <Text>Enter the family name used in your FIND server (case sensitive).</Text>
+          </CardSection>
+          <CardSection>
+            <Input
+              value={this.state.family}
+              onChangeText={family => this.setState({ family })}
+            />
+          </CardSection>
+          <CardSection>
+            <Button onPress={() => this.getUsers()}>Next</Button>
           </CardSection>
         </Card>
       </View>
