@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Header, Input, Button, Card, CardSection } from './components/common';
 
 class App extends Component {
-  state = { headerText: 'Setup', findServer: 'https://cloud.internalpositioning.com/', family: '', users: [], user: '' };
+  state = { headerText: 'Choose Server', findServer: 'https://cloud.internalpositioning.com/', family: '', users: [], user: '', serverSetup: false };
 
   componentWillMount() {
     AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
@@ -20,11 +20,57 @@ class App extends Component {
     // Contact FIND server to get users
     axios.get(url)
       .then((response) => {
-        this.setState({ users: response.data.devices });
+        this.setState({ users: response.data.devices, serverSetup: true, headerText: 'Choose User' });
       })
       .catch((error) => {
         console.log(error);
       });
+  }
+
+  // Display setup component based on state
+  chooseContent() {
+    if (this.state.serverSetup) {
+      //return this.renderUserList();
+      return (
+        <Card>
+          <CardSection>
+            <Text>Choose your username from the list below.</Text>
+          </CardSection>
+          <CardSection>
+            {this.renderUserList()}
+          </CardSection>
+          <CardSection>
+            <Button>Next</Button>
+          </CardSection>
+        </Card>
+      );
+    }
+
+    return (
+      <Card>
+        <CardSection>
+          <Text>Enter the address of your FIND server, or use the public server (default).</Text>
+        </CardSection>
+        <CardSection>
+          <Input
+            value={this.state.findServer}
+            onChangeText={findServer => this.setState({ findServer })}
+          />
+        </CardSection>
+        <CardSection>
+          <Text>Enter the family name used in your FIND server (case sensitive).</Text>
+        </CardSection>
+        <CardSection>
+          <Input
+            value={this.state.family}
+            onChangeText={family => this.setState({ family })}
+          />
+        </CardSection>
+        <CardSection>
+          <Button onPress={() => this.getUsers()}>Next</Button>
+        </CardSection>
+      </Card>
+    );
   }
 
   // List users
@@ -38,32 +84,7 @@ class App extends Component {
     return (
       <View style={styles.containerStyle}>
         <Header headerText={this.state.headerText} />
-        <Card>
-          <CardSection>
-            <Text>Enter the address of your FIND server, or use the public server (default).</Text>
-          </CardSection>
-          <CardSection>
-            <Input
-              value={this.state.findServer}
-              onChangeText={findServer => this.setState({ findServer })}
-            />
-          </CardSection>
-          <CardSection>
-            <Text>Enter the family name used in your FIND server (case sensitive).</Text>
-          </CardSection>
-          <CardSection>
-            <Input
-              value={this.state.family}
-              onChangeText={family => this.setState({ family })}
-            />
-          </CardSection>
-          <CardSection>
-            <Button onPress={() => this.getUsers()}>Next</Button>
-          </CardSection>
-          <CardSection>
-            <Text>{this.renderUserList()}</Text>
-          </CardSection>
-        </Card>
+        {this.chooseContent()}
       </View>
     );
   }
