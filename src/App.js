@@ -27,18 +27,20 @@ class App extends Component {
       });
   }
 
+  // Set user in state
+  setUser(user) {
+      this.setState({ user });
+  }
+
   // Display setup component based on state
   chooseContent() {
     if (this.state.serverSetup) {
-      //return this.renderUserList();
       return (
         <Card>
           <CardSection>
             <Text>Choose your username from the list below.</Text>
           </CardSection>
-          <CardSection>
-            {this.renderUserList()}
-          </CardSection>
+          {this.renderUserList()}
           <CardSection>
             <Button>Next</Button>
           </CardSection>
@@ -76,7 +78,9 @@ class App extends Component {
   // List users
   renderUserList() {
     return this.state.users.map(user =>
-      <Text style={styles.listItemStyle} key={user}>{user}</Text>
+      <CardSection key={user}>
+        <Button onPress={() => this.setUser({ user })}>{user}</Button>
+      </CardSection>
     );
   }
 
@@ -94,9 +98,6 @@ const styles = {
   containerStyle: {
     backgroundColor: '#F1ECE9',
     flex: 1
-  },
-  listStyle: {
-    flexDirection: 'row'
   },
   listItemStyle: {
     fontSize: 20
