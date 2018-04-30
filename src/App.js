@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage } from 'react-native';
 import axios from 'axios';
-import { Header, Input, Button, Card, CardSection } from './components/common';
+import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
 class App extends Component {
-  state = { headerText: 'Choose Server', findServer: 'https://cloud.internalpositioning.com/', family: '', users: [], user: '', serverSetup: false };
+  state = { headerText: 'Choose Server', findServer: 'https://cloud.internalpositioning.com/', family: '', users: [], user: '', serverSetup: false, isLoading: false };
 
   componentWillMount() {
     AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
@@ -12,6 +12,8 @@ class App extends Component {
   }
 
   getUsers() {
+    this.setState({ isLoading: true });
+
     // Get saved config
     AsyncStorage.setItem('findServer', this.state.findServer);
     AsyncStorage.setItem('family', this.state.family);
@@ -21,9 +23,11 @@ class App extends Component {
     axios.get(url)
       .then((response) => {
         this.setState({ users: response.data.devices, serverSetup: true, headerText: 'Choose User' });
+        this.setState({ isLoading: false });
       })
       .catch((error) => {
         console.log(error);
+        this.setState({ isLoading: false });
       });
   }
 
@@ -69,10 +73,21 @@ class App extends Component {
           />
         </CardSection>
         <CardSection>
-          <Button onPress={() => this.getUsers()}>Next</Button>
+          {this.renderButton()}
         </CardSection>
       </Card>
     );
+  }
+
+  // Determine button state
+  renderButton() {
+    if (this.state.isLoading) {
+      return <Spinner size='small' />;
+    } else if (this.state.family === '' || this.state.findServer === '') {
+      return null;
+    }
+
+    return <Button onPress={() => this.getUsers()}>Next</Button>;
   }
 
   // List users
