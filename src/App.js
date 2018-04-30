@@ -79,7 +79,7 @@ class App extends Component {
   renderUserList() {
     return this.state.users.map(user =>
       <CardSection key={user}>
-        <Button onPress={() => this.setUser({ user })}>{user}</Button>
+        <Button onPress={() => this.setUser(user)}>{user}</Button>
       </CardSection>
     );
   }
