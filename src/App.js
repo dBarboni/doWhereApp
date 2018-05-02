@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text, AsyncStorage, Picker } from 'react-native';
 import axios from 'axios';
 import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
@@ -44,7 +44,10 @@ class App extends Component {
           <CardSection>
             <Text>Choose your username from the list below.</Text>
           </CardSection>
-          {this.renderUserList()}
+          <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
+             <Picker.Item label='' value='' />
+             {this.renderUserList()}
+          </Picker>
           <CardSection>
             <Button>Next</Button>
           </CardSection>
@@ -93,9 +96,7 @@ class App extends Component {
   // List users
   renderUserList() {
     return this.state.users.map(user =>
-      <CardSection key={user}>
-        <Button onPress={() => this.setUser(user)}>{user}</Button>
-      </CardSection>
+      <Picker.Item key={user} label={user} value={user} />
     );
   }
 
