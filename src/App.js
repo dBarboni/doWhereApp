@@ -22,10 +22,17 @@ class App extends Component {
     // Contact FIND server to get users
     axios.get(url)
       .then((response) => {
-        this.setState({ users: response.data.devices, serverSetup: true, headerText: 'Choose User' });
+        if (response.data.success) {
+          // Successful
+          this.setState({ users: response.data.devices, serverSetup: true, headerText: 'Choose User' });
+        } else {
+          // Reached server successfully but no devices found for that family name
+          ToastAndroid.show('No devices found for that family name', ToastAndroid.SHORT);
+        }
         this.setState({ isLoading: false });
       })
       .catch(() => {
+        // Failed to reach server
         this.setState({ isLoading: false });
         ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
