@@ -4,7 +4,15 @@ import axios from 'axios';
 import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
 class App extends Component {
-  state = { headerText: 'Choose Server', findServer: 'https://cloud.internalpositioning.com/', family: '', users: [], user: '', serverSetup: false, isLoading: false };
+  state = {
+    headerText: 'Choose Server',
+    findServer: 'https://cloud.internalpositioning.com/',
+    family: '',
+    users: [],
+    user: '',
+    serverSetup: false,
+    isLoading: false
+  };
 
   componentWillMount() {
     AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
@@ -12,18 +20,19 @@ class App extends Component {
   }
 
   getUsers() {
+    const { findServer, family } = this.state;
     this.setState({ isLoading: true });
 
     // Get saved config
-    AsyncStorage.setItem('findServer', this.state.findServer);
-    AsyncStorage.setItem('family', this.state.family);
-    const url = this.state.findServer + '/api/v1/devices/' + this.state.family;
+    AsyncStorage.setItem('findServer', findServer);
+    AsyncStorage.setItem('family', family);
+    const url = findServer + '/api/v1/devices/' + family;
 
     // Contact FIND server to get users
     axios.get(url)
       .then((response) => {
         if (response.data.success) {
-          // Successful
+          // Successful, continue to next step
           this.setState({ users: response.data.devices, serverSetup: true, headerText: 'Choose User' });
         } else {
           // Reached server successfully but no devices found for that family name
@@ -91,11 +100,13 @@ class App extends Component {
 
   // Determine button state
   renderButton(btnText = 'Submit') {
-    if (this.state.isLoading) {
+    const { isLoading, family, findServer, serverSetup, user } = this.state;
+
+    if (isLoading) {
       return <Spinner size='small' />;
-    } else if (this.state.family === '' || this.state.findServer === '' || (this.state.serverSetup && this.state.user === '')) {
+    } else if (family === '' || findServer === '' || (serverSetup && user === '')) {
       return <Button disabled>{btnText}</Button>;
-    } else if (this.state.serverSetup) {
+    } else if (serverSetup) {
       return <Button>{btnText}</Button>;
     }
 
