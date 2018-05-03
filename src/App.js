@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, Picker } from 'react-native';
+import { View, Text, AsyncStorage, Picker, ToastAndroid } from 'react-native';
 import axios from 'axios';
 import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
@@ -26,8 +26,8 @@ class App extends Component {
         this.setState({ isLoading: false });
       })
       .catch((error) => {
-        console.log(error);
         this.setState({ isLoading: false });
+        ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
   }
 
