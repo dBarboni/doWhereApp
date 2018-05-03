@@ -25,7 +25,7 @@ class App extends Component {
         this.setState({ users: response.data.devices, serverSetup: true, headerText: 'Choose User' });
         this.setState({ isLoading: false });
       })
-      .catch((error) => {
+      .catch(() => {
         this.setState({ isLoading: false });
         ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
@@ -87,7 +87,7 @@ class App extends Component {
     if (this.state.isLoading) {
       return <Spinner size='small' />;
     } else if (this.state.family === '' || this.state.findServer === '') {
-      return null;
+      return <Button disabled>Next</Button>;
     }
 
     return <Button onPress={() => this.getUsers()}>Next</Button>;
