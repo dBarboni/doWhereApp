@@ -56,7 +56,7 @@ class App extends Component {
              {this.renderUserList()}
           </Picker>
           <CardSection>
-            <Button>Next</Button>
+            {this.renderButton('Finish')}
           </CardSection>
         </Card>
       );
@@ -83,21 +83,23 @@ class App extends Component {
           />
         </CardSection>
         <CardSection>
-          {this.renderButton()}
+          {this.renderButton('Next')}
         </CardSection>
       </Card>
     );
   }
 
   // Determine button state
-  renderButton() {
+  renderButton(btnText = 'Submit') {
     if (this.state.isLoading) {
       return <Spinner size='small' />;
-    } else if (this.state.family === '' || this.state.findServer === '') {
-      return <Button disabled>Next</Button>;
+    } else if (this.state.family === '' || this.state.findServer === '' || (this.state.serverSetup && this.state.user === '')) {
+      return <Button disabled>{btnText}</Button>;
+    } else if (this.state.serverSetup) {
+      return <Button>{btnText}</Button>;
     }
 
-    return <Button onPress={() => this.getUsers()}>Next</Button>;
+    return <Button onPress={() => this.getUsers()}>{btnText}</Button>;
   }
 
   // List users
