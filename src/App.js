@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage, Picker, ToastAndroid, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
+import RoomList from './components/RoomList';
 import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
 class App extends Component {
@@ -12,12 +13,14 @@ class App extends Component {
     user: '',
     serverSetup: false,
     isLoading: false,
-    refreshing: false
+    refreshing: false,
+    setupComplete: false
   };
 
   componentWillMount() {
     AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
     AsyncStorage.getItem('family').then((family) => this.setState({ family }));
+    AsyncStorage.getItem('user').then((user) => this.setState({ user }));
   }
 
   onRefresh() {
@@ -58,9 +61,15 @@ class App extends Component {
       this.setState({ user });
   }
 
+  // Finish serverSetup
+  completeSetup() {
+    this.setState({ setupComplete: true, headerText: 'Rooms' });
+    AsyncStorage.setItem('user', this.state.user);
+  }
+
   // Display setup component based on state
   chooseContent() {
-    if (this.state.serverSetup) {
+    if (this.state.serverSetup && !this.state.setupComplete) {
       return (
         <ScrollView
           refreshControl={
@@ -86,6 +95,8 @@ class App extends Component {
           </Card>
         </ScrollView>
       );
+    } else if (this.state.setupComplete) {
+      return <RoomList />;
     }
 
     return (
@@ -128,7 +139,7 @@ class App extends Component {
     } else if (family === '' || findServer === '' || (serverSetup && user === '')) {
       return <Button disabled>{btnText}</Button>;
     } else if (serverSetup) {
-      return <Button>{btnText}</Button>;
+      return <Button onPress={() => this.completeSetup()}>{btnText}</Button>;
     }
 
     return <Button onPress={() => this.getUsers()}>{btnText}</Button>;
