@@ -60,10 +60,12 @@ class App extends Component {
           <CardSection>
             <Text>Choose your username from the list below.</Text>
           </CardSection>
-          <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
-             <Picker.Item label='- User -' value='' />
-             {this.renderUserList()}
-          </Picker>
+          <View style={styles.pickerContainerStyle}>
+            <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
+               <Picker.Item label='- User -' value='' />
+               {this.renderUserList()}
+            </Picker>
+          </View>
           <CardSection>
             {this.renderButton('Finish')}
           </CardSection>
@@ -135,8 +137,9 @@ const styles = {
     backgroundColor: '#F1ECE9',
     flex: 1
   },
-  listItemStyle: {
-    fontSize: 20
+  pickerContainerStyle: {
+    backgroundColor: '#fff',
+    padding: 5
   }
 };
 
