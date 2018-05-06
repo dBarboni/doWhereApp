@@ -18,9 +18,12 @@ class App extends Component {
   };
 
   componentWillMount() {
-    AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
-    AsyncStorage.getItem('family').then((family) => this.setState({ family }));
-    AsyncStorage.getItem('user').then((user) => this.setState({ user }));
+    // Retrieve stored config and load into state
+    AsyncStorage.multiGet(['findServer', 'family', 'user']).then((config) => {
+      config.forEach((item) => {
+        this.setState({ [item[0]]: item[1] });
+      });
+    });
   }
 
   onRefresh() {
