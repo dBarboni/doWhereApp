@@ -61,7 +61,7 @@ class App extends Component {
             <Text>Choose your username from the list below.</Text>
           </CardSection>
           <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
-             <Picker.Item label='' value='' />
+             <Picker.Item label='- User -' value='' />
              {this.renderUserList()}
           </Picker>
           <CardSection>
