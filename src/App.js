@@ -97,6 +97,8 @@ class App extends Component {
           <Input
             value={this.state.findServer}
             onChangeText={findServer => this.setState({ findServer })}
+            autoCapitalize={'none'}
+            autoCorrect={false}
           />
         </CardSection>
         <CardSection>
@@ -106,6 +108,8 @@ class App extends Component {
           <Input
             value={this.state.family}
             onChangeText={family => this.setState({ family })}
+            autoCapitalize={'none'}
+            autoCorrect={false}
           />
         </CardSection>
         <CardSection>

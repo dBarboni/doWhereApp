@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput, View, Text } from 'react-native';
 
-const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => {
+const Input = ({ label, value, onChangeText, placeholder, secureTextEntry, autoCapitalize, autoCorrect }) => {
   const { inputStyle, labelStyle, containerStyle } = styles;
 
   return (
@@ -12,9 +12,10 @@ const Input = ({ label, value, onChangeText, placeholder, secureTextEntry }) => 
         onChangeText={onChangeText}
         style={inputStyle}
         underlineColorAndroid='transparent'
-        autoCorrect={false}
+        autoCorrect={autoCorrect}
         placeholder={placeholder}
         secureTextEntry={secureTextEntry}
+        autoCapitalize={autoCapitalize}
       />
     </View>
   );
