@@ -19,7 +19,7 @@ class App extends Component {
 
   componentWillMount() {
     // Retrieve stored config and load into state
-    AsyncStorage.multiGet(['findServer', 'family', 'user']).then((config) => {
+    AsyncStorage.multiGet(['findServer', 'family', 'user', 'setupComplete']).then((config) => {
       config.forEach((item) => {
         this.setState({ [item[0]]: item[1] });
       });
@@ -67,7 +67,7 @@ class App extends Component {
   // Finish serverSetup
   completeSetup() {
     this.setState({ setupComplete: true, headerText: 'Rooms' });
-    AsyncStorage.setItem('user', this.state.user);
+    AsyncStorage.multiSet([['user', this.state.user], ['setupComplete', 'true']]);
   }
 
   // Display setup component based on state
