@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage, Picker, ToastAndroid } from 'react-native';
+import { View, Text, AsyncStorage, Picker, ToastAndroid, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
 import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
@@ -11,12 +11,18 @@ class App extends Component {
     users: [],
     user: '',
     serverSetup: false,
-    isLoading: false
+    isLoading: false,
+    refreshing: false
   };
 
   componentWillMount() {
     AsyncStorage.getItem('findServer').then((findServer) => this.setState({ findServer }));
     AsyncStorage.getItem('family').then((family) => this.setState({ family }));
+  }
+
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.getUsers();
   }
 
   getUsers() {
@@ -38,11 +44,11 @@ class App extends Component {
           // Reached server successfully but no devices found for that family name
           ToastAndroid.show('No devices found for that family name', ToastAndroid.SHORT);
         }
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, refreshing: false });
       })
       .catch(() => {
         // Failed to reach server
-        this.setState({ isLoading: false });
+        this.setState({ isLoading: false, refreshing: false });
         ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
   }
@@ -56,20 +62,29 @@ class App extends Component {
   chooseContent() {
     if (this.state.serverSetup) {
       return (
-        <Card>
-          <CardSection>
-            <Text>Choose your username from the list below.</Text>
-          </CardSection>
-          <View style={styles.pickerContainerStyle}>
-            <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
-               <Picker.Item label='- User -' value='' />
-               {this.renderUserList()}
-            </Picker>
-          </View>
-          <CardSection>
-            {this.renderButton('Finish')}
-          </CardSection>
-        </Card>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh.bind(this)}
+            />
+          }
+        >
+          <Card>
+            <CardSection>
+              <Text>Choose your username from the list below.</Text>
+            </CardSection>
+            <View style={styles.pickerContainerStyle}>
+              <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
+                 <Picker.Item label='- User -' value='' />
+                 {this.renderUserList()}
+              </Picker>
+            </View>
+            <CardSection>
+              {this.renderButton('Finish')}
+            </CardSection>
+          </Card>
+        </ScrollView>
       );
     }
 
