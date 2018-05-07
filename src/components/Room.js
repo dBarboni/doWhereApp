@@ -15,12 +15,13 @@ class Room extends Component {
    };
  }
 
+// Get tasks
  componentWillMount() {
-   const url = this.state.dowhereServer + '/rooms/' + this.state.room;
-   console.log(url);
+   const url = `${this.state.dowhereServer}/rooms/${this.state.room}`;
+
    axios.get(url)
      .then((response) => {
-       console.log(response);
+       // Success
        this.setState({ tasks: response.data });
      })
      .catch(() => {

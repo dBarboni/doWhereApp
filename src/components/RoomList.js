@@ -16,7 +16,7 @@ class RoomList extends Component {
  }
 
   componentWillMount() {
-    const url = this.props.findServer + '/api/v1/location/' + this.state.family + '/' + this.state.user;
+    const url = `${this.props.findServer}/api/v1/location/${this.state.family}/${this.state.user}`;
 
     axios.get(url)
       .then((response) => {

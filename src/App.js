@@ -40,7 +40,8 @@ class App extends Component {
     // Store config
     AsyncStorage.setItem('findServer', findServer);
     AsyncStorage.setItem('family', family);
-    const url = findServer + '/api/v1/devices/' + family;
+
+    const url = `${findServer}/api/v1/devices/${family}`;
 
     // Contact FIND server to get users
     axios.get(url)
