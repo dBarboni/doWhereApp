@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Text, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import axios from 'axios';
+import { Room } from './';
 
 class RoomList extends Component {
   constructor(props) {
@@ -36,18 +37,17 @@ class RoomList extends Component {
 
   showRooms() {
     return Object.values(this.state.rooms).map(room =>
-      <Text key={room}>{room}</Text>
+      <Room key={room} room={room} />
     );
   }
 
   render() {
     return (
       <ScrollView>
-        <Text>Room list</Text>
         {this.showRooms()}
       </ScrollView>
     );
   }
 }
 
-export default RoomList;
+export { RoomList };

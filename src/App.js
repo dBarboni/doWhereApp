@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, AsyncStorage, Picker, ToastAndroid, ScrollView, RefreshControl } from 'react-native';
 import axios from 'axios';
-import RoomList from './components/RoomList';
+import { RoomList } from './components/';
 import { Header, Input, Button, Card, CardSection, Spinner } from './components/common';
 
 class App extends Component {
