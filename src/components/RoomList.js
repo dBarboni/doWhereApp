@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, ToastAndroid } from 'react-native';
 import axios from 'axios';
 import { Room } from './';
 
@@ -25,13 +25,14 @@ class RoomList extends Component {
           const rooms = response.data.analysis.location_names;
           this.setState({ rooms });
         } else {
-          // Reached server successfully but...
+          // Reached server successfully but nothing found
+          // TODO: add 'add some rooms' text
 
         }
       })
       .catch(() => {
         // Failed to reach server
-
+        ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
   }
 

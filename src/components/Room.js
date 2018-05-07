@@ -1,15 +1,38 @@
 import React, { Component } from 'react';
-import { Text } from 'react-native';
+import { Text, ToastAndroid } from 'react-native';
+import axios from 'axios';
 import { Card, CardSection } from './common';
-// import axios from 'axios';
 
 class Room extends Component {
   constructor(props) {
    super(props);
 
+   // TODO: Move dowhereServer definition to config
    this.state = {
-     room: this.props.room
+     room: this.props.room,
+     dowhereServer: 'http://192.168.1.191:8000',
+     tasks: []
    };
+ }
+
+ componentWillMount() {
+   const url = this.state.dowhereServer + '/rooms/' + this.state.room;
+   console.log(url);
+   axios.get(url)
+     .then((response) => {
+       console.log(response);
+       this.setState({ tasks: response.data });
+     })
+     .catch(() => {
+       // Failed to reach server
+       ToastAndroid.show('Unable to connect to DoWhere server', ToastAndroid.SHORT);
+     });
+ }
+
+ renderTasks() {
+   return this.state.tasks.map(task =>
+    <Text key={task._id}>{task.task}</Text>
+   );
  }
 
   render() {
@@ -20,6 +43,7 @@ class Room extends Component {
         </CardSection>
         <CardSection>
           <Text>Tasks:</Text>
+          {this.renderTasks()}
         </CardSection>
       </Card>
     );
