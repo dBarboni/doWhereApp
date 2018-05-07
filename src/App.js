@@ -26,16 +26,18 @@ class App extends Component {
     });
   }
 
+  // Pull-to-refresh for user list
   onRefresh() {
     this.setState({ refreshing: true });
     this.getUsers();
   }
 
+  // Get list of users on FIND server
   getUsers() {
     const { findServer, family } = this.state;
     this.setState({ isLoading: true });
 
-    // Get saved config
+    // Store config
     AsyncStorage.setItem('findServer', findServer);
     AsyncStorage.setItem('family', family);
     const url = findServer + '/api/v1/devices/' + family;
@@ -99,7 +101,7 @@ class App extends Component {
         </ScrollView>
       );
     } else if (this.state.setupComplete) {
-      return <RoomList />;
+      return <RoomList findServer={this.state.findServer} family={this.state.family} user={this.state.user} />;
     }
 
     return (
