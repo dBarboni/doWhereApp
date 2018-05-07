@@ -42,7 +42,7 @@ class Room extends Component {
         <CardSection>
           <Text style={styles.titleStyle}>{this.state.room}</Text>
         </CardSection>
-        <CardSection>
+        <CardSection layout='column'>
           <Text>Tasks:</Text>
           {this.renderTasks()}
         </CardSection>
