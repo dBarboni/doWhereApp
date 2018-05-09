@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, ToastAndroid } from 'react-native';
 import axios from 'axios';
-import { Card, CardSection } from './common';
+import { Card, CardSection, Button } from './common';
 
 class Room extends Component {
   constructor(props) {
@@ -43,8 +43,11 @@ class Room extends Component {
           <Text style={styles.titleStyle}>{this.state.room}</Text>
         </CardSection>
         <CardSection layout='column'>
-          <Text>Tasks:</Text>
+          <Text style={styles.subtitleStyle}>Tasks:</Text>
           {this.renderTasks()}
+        </CardSection>
+        <CardSection>
+          <Button>+</Button>
         </CardSection>
       </Card>
     );
@@ -54,7 +57,12 @@ class Room extends Component {
 const styles = {
   titleStyle: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    flex: 1,
+    textAlign: 'center'
+  },
+  subtitleStyle: {
+    fontSize: 17
   }
 };
 
