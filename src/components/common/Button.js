@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-const Button = ({ onPress, children, disabled }) => {
-  const { buttonStyle, textStyle } = styles;
+const Button = ({ onPress, children, disabled, isFAB }) => {
+  const { buttonStyle, textStyle, FABstyle } = styles;
 
   return (
-    <TouchableOpacity onPress={onPress} style={[buttonStyle, { backgroundColor: disabled ? '#999' : '#247BA0' }]} disabled={disabled || false}>
-      <Text style={textStyle}>{children}</Text>
+    <TouchableOpacity onPress={onPress} style={[isFAB ? FABstyle : buttonStyle, { backgroundColor: disabled ? '#999' : '#247BA0' }]} disabled={disabled || false}>
+      <Text style={[textStyle, { fontSize: isFAB ? 20 : 16 }]}>{children}</Text>
     </TouchableOpacity>
   );
 };
@@ -22,9 +22,13 @@ const styles = {
   textStyle: {
     alignSelf: 'center',
     color: '#fff',
-    fontSize: 16,
     paddingTop: 10,
     paddingBottom: 10
+  },
+  FABstyle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25
   }
 };
 

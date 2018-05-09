@@ -47,7 +47,7 @@ class Room extends Component {
           {this.renderTasks()}
         </CardSection>
         <CardSection>
-          <Button>+</Button>
+          <Button isFAB>+</Button>
         </CardSection>
       </Card>
     );
