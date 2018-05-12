@@ -12,7 +12,7 @@ class App extends Component {
     users: [],
     user: '',
     serverSetup: false,
-    isLoading: false,
+    isLoading: true,
     refreshing: false,
     setupComplete: false
   };
@@ -23,6 +23,7 @@ class App extends Component {
       config.forEach((item) => {
         this.setState({ [item[0]]: item[1] });
       });
+      this.setState({ isLoading: false });
     });
   }
 
@@ -75,7 +76,9 @@ class App extends Component {
 
   // Display setup component based on state
   chooseContent() {
-    if (this.state.serverSetup && !this.state.setupComplete) {
+    if (this.state.isLoading) {
+      return <Spinner size='large' />;
+    } else if (this.state.serverSetup && !this.state.setupComplete) {
       return (
         <ScrollView
           refreshControl={
