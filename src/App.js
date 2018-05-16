@@ -63,9 +63,9 @@ class App extends Component {
       });
   }
 
-  // Set user in state
-  setUser(user) {
-      this.setState({ user });
+  // Update state
+  updateState(propName, propValue) {
+      this.setState({ [propName]: propValue });
   }
 
   // Finish serverSetup
