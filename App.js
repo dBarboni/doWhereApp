@@ -93,7 +93,7 @@ class App extends Component {
               <Text>Choose your username from the list below.</Text>
             </CardSection>
             <View style={styles.pickerContainerStyle}>
-              <Picker selectedValue={this.state.user} onValueChange={(user) => this.setUser(user)}>
+              <Picker selectedValue={this.state.user} onValueChange={(user) => this.setState({ user })}>
                  <Picker.Item label='- User -' value='' />
                  {this.renderUserList()}
               </Picker>
