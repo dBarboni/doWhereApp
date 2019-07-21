@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, ToastAndroid } from 'react-native';
 import axios from 'axios';
-import { Card, CardSection, Button } from './common';
+import { Card, CardSection } from './common';
 
 class Room extends Component {
   constructor(props) {
@@ -49,9 +49,6 @@ class Room extends Component {
         <CardSection layout='column'>
           <Text style={styles.subtitleStyle}>Tasks:</Text>
           {this.renderTasks()}
-        </CardSection>
-        <CardSection>
-          <Button isFAB>+</Button>
         </CardSection>
       </Card>
     );
