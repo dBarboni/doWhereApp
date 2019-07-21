@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, ToastAndroid } from 'react-native';
 import axios from 'axios';
-import { Card, CardSection, Button } from './common';
+import { Card, CardSection } from './common';
 
 class Room extends Component {
   constructor(props) {
@@ -31,9 +31,13 @@ class Room extends Component {
  }
 
  renderTasks() {
-   return this.state.tasks.map(task =>
-    <Text key={task._id}>{task.task}</Text>
-   );
+   if (this.state.tasks.length > 0) {
+     return this.state.tasks.map(task =>
+      <Text key={task._id} style={styles.taskStyle}>- {task.task}</Text>
+     );
+   } else {
+     return <Text style={styles.taskStyle}>No tasks found for this room.</Text>;
+   }
  }
 
   render() {
@@ -43,11 +47,7 @@ class Room extends Component {
           <Text style={styles.titleStyle}>{this.state.room}</Text>
         </CardSection>
         <CardSection layout='column'>
-          <Text style={styles.subtitleStyle}>Tasks:</Text>
           {this.renderTasks()}
-        </CardSection>
-        <CardSection>
-          <Button isFAB>+</Button>
         </CardSection>
       </Card>
     );
@@ -56,12 +56,16 @@ class Room extends Component {
 
 const styles = {
   titleStyle: {
+    backgroundColor: '#247BA0',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
     flex: 1,
-    textAlign: 'center'
+    textAlign: 'center',
+    margin: -5,
+    padding: 5
   },
-  subtitleStyle: {
+  taskStyle: {
     fontSize: 17
   }
 };

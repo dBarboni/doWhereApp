@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { ScrollView, ToastAndroid } from 'react-native';
+import { View, ScrollView, ToastAndroid } from 'react-native';
 import axios from 'axios';
 import { Room } from './';
+import { Button } from './common';
 
 class RoomList extends Component {
   constructor(props) {
@@ -44,11 +45,27 @@ class RoomList extends Component {
 
   render() {
     return (
-      <ScrollView>
-        {this.showRooms()}
-      </ScrollView>
+      <View style={styles.parentStyle}>
+        <ScrollView>
+          {this.showRooms()}
+        </ScrollView>
+        <View style={styles.buttonContainerStyle}>
+          <Button type='FAB'>+</Button>
+        </View>
+      </View>
     );
   }
 }
+
+const styles = {
+  buttonContainerStyle: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10
+  },
+  parentStyle: {
+    flex: 1
+  }
+};
 
 export { RoomList };
