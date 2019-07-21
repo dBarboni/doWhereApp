@@ -31,9 +31,13 @@ class Room extends Component {
  }
 
  renderTasks() {
-   return this.state.tasks.map(task =>
-    <Text key={task._id}>{task.task}</Text>
-   );
+   if (this.state.tasks.length > 0) {
+     return this.state.tasks.map(task =>
+      <Text key={task._id}>{task.task}</Text>
+     );
+   } else {
+     return <Text>No tasks found for this room.</Text>;
+   }
  }
 
   render() {
