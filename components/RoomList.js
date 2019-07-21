@@ -50,7 +50,7 @@ class RoomList extends Component {
           {this.showRooms()}
         </ScrollView>
         <View style={styles.buttonContainerStyle}>
-          <Button isFAB>+</Button>
+          <Button type='FAB'>+</Button>
         </View>
       </View>
     );

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-const Button = ({ onPress, children, disabled, isFAB }) => {
+const Button = ({ onPress, children, disabled, type }) => {
   const { buttonStyle, textStyle, FABstyle } = styles;
 
   return (
-    <TouchableOpacity onPress={onPress} style={[isFAB ? FABstyle : buttonStyle, { backgroundColor: disabled ? '#999' : '#247BA0' }]} disabled={disabled || false}>
-      <Text style={[textStyle, { fontSize: isFAB ? 20 : 16 }]}>{children}</Text>
+    <TouchableOpacity onPress={onPress} style={[(type === 'FAB') ? FABstyle : buttonStyle, { backgroundColor: disabled ? '#999' : '#247BA0' }]} disabled={disabled || false}>
+      <Text style={[textStyle, { fontSize: (type === 'FAB') ? 20 : 16 }]}>{children}</Text>
     </TouchableOpacity>
   );
 };
