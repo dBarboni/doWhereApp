@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, ToastAndroid, Modal, Text, Input } from 'react-native';
+import { View, ScrollView, ToastAndroid, Modal, Text, Picker } from 'react-native';
 import axios from 'axios';
 import { Room } from './';
-import { Button } from './common';
+import { Button, Input } from './common';
 
 class RoomList extends Component {
   constructor(props) {
@@ -45,6 +45,11 @@ class RoomList extends Component {
       <Room key={room} room={room} />
     );
   }
+  renderRoomList() {
+    return Object.values(this.state.rooms).map(room =>
+      <Picker.Item key={room} label={room} value={room} />
+    );
+  }
 
   render() {
     return (
@@ -58,7 +63,19 @@ class RoomList extends Component {
         <Modal animationType="fade" transparent={true} visible={this.state.modalVisible}>
           <View style={styles.modalStyle}>
             <View style={styles.containerStyle}>
-              <Text>Add a Task</Text>
+              <Text>Select a room:</Text>
+              <View style={styles.pickerContainerStyle}>
+                <Picker selectedValue={this.state.room} onValueChange={(room) => this.setState({ room })}>
+                   <Picker.Item label='- Room -' value='' />
+                   {this.renderRoomList()}
+                </Picker>
+              </View>
+              <Text>Enter a task:</Text>
+              <Input
+                value={this.state.task}
+                onChangeText={task => this.setState({ task })}
+              />
+              <Button>Submit</Button>
             </View>
           </View>
         </Modal>
@@ -75,7 +92,9 @@ const styles = {
   },
   containerStyle: {
     backgroundColor: '#fff',
-    padding: 20
+    padding: 20,
+    width: '80%',
+    height: '50%'
   },
   modalStyle: {
     backgroundColor: '#00000075',
@@ -86,6 +105,10 @@ const styles = {
   },
   parentStyle: {
     flex: 1
+  },
+  pickerContainerStyle: {
+    backgroundColor: '#fff',
+    padding: 5
   }
 };
 
