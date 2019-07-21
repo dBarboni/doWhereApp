@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, ToastAndroid } from 'react-native';
+import { View, ScrollView, ToastAndroid, Modal, Text, Input } from 'react-native';
 import axios from 'axios';
 import { Room } from './';
 import { Button } from './common';
@@ -11,6 +11,7 @@ class RoomList extends Component {
    this.state = {
      findServer: this.props.findServer,
      family: this.props.family,
+     modalVisible: false,
      user: this.props.user,
      rooms: []
    };
@@ -36,7 +37,9 @@ class RoomList extends Component {
         ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
   }
-
+  showModal(visible) {
+    this.setState({ modalVisible: visible });
+  }
   showRooms() {
     return Object.values(this.state.rooms).map(room =>
       <Room key={room} room={room} />
@@ -50,8 +53,15 @@ class RoomList extends Component {
           {this.showRooms()}
         </ScrollView>
         <View style={styles.buttonContainerStyle}>
-          <Button type='FAB'>+</Button>
+          <Button type='FAB' onPress={() => this.showModal(true)}>+</Button>
         </View>
+        <Modal animationType="fade" transparent={true} visible={this.state.modalVisible}>
+          <View style={styles.modalStyle}>
+            <View style={styles.containerStyle}>
+              <Text>Add a Task</Text>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -62,6 +72,17 @@ const styles = {
     position: 'absolute',
     bottom: 10,
     right: 10
+  },
+  containerStyle: {
+    backgroundColor: '#fff',
+    padding: 20
+  },
+  modalStyle: {
+    backgroundColor: '#00000075',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   parentStyle: {
     flex: 1
