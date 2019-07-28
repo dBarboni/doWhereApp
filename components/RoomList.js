@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, ToastAndroid } from 'react-native';
+import { View, ScrollView, ToastAndroid, Modal, Text, Picker } from 'react-native';
 import axios from 'axios';
 import { Room } from './';
-import { Button } from './common';
+import { Button, Input } from './common';
 
 class RoomList extends Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class RoomList extends Component {
    this.state = {
      findServer: this.props.findServer,
      family: this.props.family,
+     modalVisible: false,
      user: this.props.user,
      rooms: []
    };
@@ -36,10 +37,17 @@ class RoomList extends Component {
         ToastAndroid.show('Unable to connect to FIND server', ToastAndroid.SHORT);
       });
   }
-
+  showModal(visible) {
+    this.setState({ modalVisible: visible });
+  }
   showRooms() {
     return Object.values(this.state.rooms).map(room =>
       <Room key={room} room={room} />
+    );
+  }
+  renderRoomList() {
+    return Object.values(this.state.rooms).map(room =>
+      <Picker.Item key={room} label={room} value={room} />
     );
   }
 
@@ -50,8 +58,27 @@ class RoomList extends Component {
           {this.showRooms()}
         </ScrollView>
         <View style={styles.buttonContainerStyle}>
-          <Button type='FAB'>+</Button>
+          <Button type='FAB' onPress={() => this.showModal(true)}>+</Button>
         </View>
+        <Modal animationType="fade" transparent={true} visible={this.state.modalVisible}>
+          <View style={styles.modalStyle}>
+            <View style={styles.containerStyle}>
+              <Text>Select a room:</Text>
+              <View style={styles.pickerContainerStyle}>
+                <Picker selectedValue={this.state.room} onValueChange={(room) => this.setState({ room })}>
+                   <Picker.Item label='- Room -' value='' />
+                   {this.renderRoomList()}
+                </Picker>
+              </View>
+              <Text>Enter a task:</Text>
+              <Input
+                value={this.state.task}
+                onChangeText={task => this.setState({ task })}
+              />
+              <Button>Submit</Button>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -63,8 +90,25 @@ const styles = {
     bottom: 10,
     right: 10
   },
+  containerStyle: {
+    backgroundColor: '#fff',
+    padding: 20,
+    width: '80%',
+    height: '50%'
+  },
+  modalStyle: {
+    backgroundColor: '#00000075',
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   parentStyle: {
     flex: 1
+  },
+  pickerContainerStyle: {
+    backgroundColor: '#fff',
+    padding: 5
   }
 };
 
