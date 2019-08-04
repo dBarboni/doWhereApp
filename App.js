@@ -7,7 +7,8 @@ import { Header, Input, Button, Card, CardSection, Spinner } from './components/
 class App extends Component {
   state = {
     headerText: 'Choose Server',
-    findServer: 'https://cloud.internalpositioning.com/',
+    findServer: '',
+    findServer_public: 'https://cloud.internalpositioning.com',
     family: '',
     users: [],
     user: '',
@@ -35,8 +36,10 @@ class App extends Component {
 
   // Get list of users on FIND server
   getUsers() {
-    const { findServer, family } = this.state;
-    this.setState({ isLoading: true });
+    const { findServer_public, family } = this.state;
+    let { findServer } = this.state;
+    findServer = findServer || findServer_public; // If server field left blank use public
+    this.setState({ isLoading: true, findServer });
 
     // Store config
     AsyncStorage.setItem('findServer', findServer);
@@ -111,11 +114,12 @@ class App extends Component {
     return (
       <Card>
         <CardSection>
-          <Text>Enter the address of your FIND server, or use the public server (default).</Text>
+          <Text>Enter the address of your FIND server. Leave blank to use the public server.</Text>
         </CardSection>
         <CardSection>
           <Input
             value={this.state.findServer}
+            placeholder={this.state.findServer_public}
             onChangeText={findServer => this.setState({ findServer })}
             autoCapitalize={'none'}
             autoCorrect={false}
@@ -142,10 +146,9 @@ class App extends Component {
   // Determine button state
   renderButton(btnText = 'Submit') {
     const { isLoading, family, findServer, serverSetup, user } = this.state;
-
     if (isLoading) {
       return <Spinner size='small' />;
-    } else if (family === '' || findServer === '' || (serverSetup && user === '')) {
+    } else if (family === null || family === '' || (serverSetup && user === '')) {
       return <Button disabled>{btnText}</Button>;
     } else if (serverSetup) {
       return <Button onPress={() => this.completeSetup()}>{btnText}</Button>;

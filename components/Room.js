@@ -10,7 +10,7 @@ class Room extends Component {
    // TODO: Move dowhereServer definition to config
    this.state = {
      room: this.props.room,
-     dowhereServer: 'http://192.168.1.191:8000',
+     dowhereServer: 'http://192.168.1.224:8000',
      tasks: []
    };
  }
