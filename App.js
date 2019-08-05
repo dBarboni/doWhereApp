@@ -66,11 +66,6 @@ class App extends Component {
       });
   }
 
-  // Update state
-  updateState(propName, propValue) {
-      this.setState({ [propName]: propValue });
-  }
-
   // Finish serverSetup
   completeSetup() {
     this.setState({ setupComplete: true, headerText: 'Rooms' });
