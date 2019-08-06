@@ -60,7 +60,7 @@ class RoomList extends Component {
         <View style={styles.buttonContainerStyle}>
           <Button type='FAB' onPress={() => this.showModal(true)}>+</Button>
         </View>
-        <Modal animationType="fade" transparent={true} visible={this.state.modalVisible}>
+        <Modal animationType="fade" transparent={true} visible={this.state.modalVisible} onRequestClose={() => { this.showModal(false); } }>
           <View style={styles.modalStyle}>
             <View style={styles.containerStyle}>
               <Text>Select a room:</Text>
